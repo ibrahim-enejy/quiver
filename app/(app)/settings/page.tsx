@@ -588,12 +588,15 @@ export default function SettingsPage() {
               </div>
               <Separator />
               <p className="text-sm text-muted-foreground">
-                API key is configured via environment variables. Update it in
-                your deployment settings (e.g.{' '}
+                API key is configured via environment variables. Set{' '}
+                <code className="rounded bg-muted px-1 py-0.5 text-xs">
+                  OPENROUTER_API_KEY
+                </code>{' '}
+                (recommended) or{' '}
                 <code className="rounded bg-muted px-1 py-0.5 text-xs">
                   ANTHROPIC_API_KEY
-                </code>
-                ).
+                </code>{' '}
+                in your deployment settings.
               </p>
               {!isAdmin && currentUser && (
                 <p className="text-sm text-muted-foreground italic">

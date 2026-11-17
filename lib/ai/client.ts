@@ -20,8 +20,66 @@
 import Anthropic from '@anthropic-ai/sdk';
 import type { MessageParam } from '@anthropic-ai/sdk/resources/messages';
 
-const MODEL = 'claude-sonnet-4-20250514';
+const DEFAULT_ANTHROPIC_MODEL = 'claude-sonnet-4-20250514';
+const DEFAULT_OPENROUTER_MODEL = 'anthropic/claude-sonnet-5.5';
+const OPENROUTER_ANTHROPIC_BASE_URL = 'https://openrouter.ai/api';
 const MAX_TOKENS = 8192;
+
+export interface AIClientConfig {
+  provider: 'openrouter' | 'anthropic';
+  apiKey: string;
+  baseURL?: string;
+  model: string;
+  defaultHeaders?: Record<string, string>;
+}
+
+/**
+ * Resolves AI provider configuration from environment variables.
+ * Prefers OPENROUTER_API_KEY (or any sk-or- key in ANTHROPIC_API_KEY) and falls
+ * back cleanly to standard ANTHROPIC_API_KEY.
+ */
+export function resolveAIClientConfig(
+  env: Record<string, string | undefined> = process.env
+): AIClientConfig {
+  const openRouterKey = env.OPENROUTER_API_KEY?.trim();
+  const anthropicKey = env.ANTHROPIC_API_KEY?.trim();
+  const apiKey = openRouterKey || anthropicKey;
+
+  if (!apiKey) {
+    throw new Error(
+      'Neither OPENROUTER_API_KEY nor ANTHROPIC_API_KEY is set. Add one to your environment variables.'
+    );
+  }
+
+  const isOpenRouter =
+    Boolean(openRouterKey) || apiKey.startsWith('sk-or-');
+
+  const model =
+    env.QUIVER_AI_MODEL?.trim() ||
+    (isOpenRouter ? DEFAULT_OPENROUTER_MODEL : DEFAULT_ANTHROPIC_MODEL);
+
+  if (isOpenRouter) {
+    return {
+      provider: 'openrouter',
+      apiKey,
+      baseURL: env.QUIVER_AI_BASE_URL?.trim() || OPENROUTER_ANTHROPIC_BASE_URL,
+      model,
+      defaultHeaders: {
+        'HTTP-Referer': env.NEXT_PUBLIC_APP_URL?.trim() || 'https://formatio.cloud',
+        'X-Title': 'Formatio Quiver',
+      },
+    };
+  }
+
+  return {
+    provider: 'anthropic',
+    apiKey,
+    ...(env.QUIVER_AI_BASE_URL?.trim()
+      ? { baseURL: env.QUIVER_AI_BASE_URL.trim() }
+      : {}),
+    model,
+  };
+}
 
 export interface AIError {
   code: 'api_error' | 'rate_limit' | 'auth_error' | 'network_error' | 'unknown_error';
@@ -37,17 +95,21 @@ interface StreamOptions {
 }
 
 let _client: Anthropic | null = null;
+let _clientCacheKey: string | null = null;
 
-function getClient(): Anthropic {
-  if (_client) return _client;
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    throw new Error(
-      'ANTHROPIC_API_KEY is not set. Add it to your environment variables.'
-    );
+function getClient(): { client: Anthropic; config: AIClientConfig } {
+  const config = resolveAIClientConfig();
+  const cacheKey = `${config.provider}:${config.apiKey.slice(0, 12)}:${config.baseURL ?? ''}:${config.model}`;
+  if (_client && _clientCacheKey === cacheKey) {
+    return { client: _client, config };
   }
-  _client = new Anthropic({ apiKey });
-  return _client;
+  _client = new Anthropic({
+    apiKey: config.apiKey,
+    ...(config.baseURL ? { baseURL: config.baseURL } : {}),
+    ...(config.defaultHeaders ? { defaultHeaders: config.defaultHeaders } : {}),
+  });
+  _clientCacheKey = cacheKey;
+  return { client: _client, config };
 }
 
 function classifyError(error: unknown): AIError {
@@ -101,13 +163,13 @@ export function createStream(options: StreamOptions): {
   const encoder = new TextEncoder();
 
   try {
-    const client = getClient();
+    const { client, config } = getClient();
 
     const stream = new ReadableStream<Uint8Array>({
       async start(controller) {
         try {
           const response = client.messages.stream({
-            model: MODEL,
+            model: config.model,
             max_tokens: options.maxTokens ?? MAX_TOKENS,
             system: options.system,
             messages: options.messages,
@@ -147,10 +209,10 @@ export async function sendMessage(options: StreamOptions): Promise<
   { content: string; error?: never } | { content?: never; error: AIError }
 > {
   try {
-    const client = getClient();
+    const { client, config } = getClient();
 
     const response = await client.messages.create({
-      model: MODEL,
+      model: config.model,
       max_tokens: options.maxTokens ?? MAX_TOKENS,
       system: options.system,
       messages: options.messages,

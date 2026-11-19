@@ -116,7 +116,7 @@ const FORMATIO_CONTEXT = {
     },
   ],
   brandVoice:
-    'Technical practitioner voice modeled on PostHog and Infisical: strict sentence case, longer precise mechanisms paired with short punchy sentences; one idea per paragraph; teach the process before mentioning the tool; dry earned humor; zero AI hype.',
+    'Technical practitioner voice modeled on PostHog and Infisical: enforce strict sentence case across every blog title, heading, table header, button, diagram label, chart, caption, and alt text (never Title Case); every mention of Formatio across prose, screenshots, SVG diagrams, social graphics, OG cards, captions, and video overlays must stay 100% aligned with v2.1.0 ($200/month flat, 14-day free trial, playground.formatio.cloud, multi-runtime Swarm/K8s/ECS/Cloud Run, lightweight OTel via Railpack or a 2-3 line SDK hook, agent-agnostic /mcp). Pair longer precise mechanisms with short punchy sentences; one idea per paragraph; teach the process first; zero AI hype.',
   wordsToUse: [
     'OpenTelemetry',
     'suspect commit',
@@ -179,7 +179,7 @@ async function main() {
         updatedBy: 'sarafadeen@formatio.cloud',
         updateSource: 'manual_seed',
         changeSummary:
-          'Synced Formatio GTM operating context v2.1.0 ($200/mo flat, 14-day free trial, playground.formatio.cloud, multi-runtime Swarm/K8s/ECS/Cloud Run, lightweight OTel, agent-agnostic /mcp).',
+          'Enforced strict sentence case and universal cross-asset v2.1.0 alignment (prose, blog posts, images, SVGs, screenshots, captions, and social graphics) alongside $200/mo flat, 14-day free trial, and playground.formatio.cloud.',
       },
     });
   });

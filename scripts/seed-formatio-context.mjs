@@ -13,79 +13,83 @@ const force = process.argv.includes('--force');
 
 const FORMATIO_CONTEXT = {
   positioningStatement:
-    'Formatio is the unified delivery, OpenTelemetry observability, governed runtime, and AI SRE workspace ($200/month flat per organization) for Seed-to-Series A engineering teams and their coding agents (/mcp).',
+    'Formatio is the unified delivery, lightweight OpenTelemetry observability, governed runtime, and AI SRE operating layer ($200/month flat per organization after a 14-day free trial) for both lean engineering teams and enterprise divisions, plus coding agents (/mcp). Interactive playground: https://playground.formatio.cloud.',
   icpDefinition: {
     definition:
-      'Seed to Series A engineering organizations (4-35 engineers) running production workloads across multi-tool DIY stacks (GitHub Actions + ECS/Kubernetes/Render + Datadog/Sentry) who want unified deployment-to-incident ownership without a dedicated platform engineering hire.',
+      'Public site welcomes engineering teams of all sizes (4 to 500+ engineers) tired of stitching CI scripts, separate APMs, and AI log copy-pasting; outbound prioritizes 4-35 engineer teams for fast onboarding.',
     decisionMaker:
-      'CTO, VP Engineering, or Founding Engineer tired of fragile CI YAML, surprise per-host APM bills, and manual incident war rooms.',
+      'CTO, VP Engineering, Founding/Staff Engineer, or Platform/Security Lead rejecting per-seat APM bills and manual incident war rooms.',
     primaryUseCase:
-      'Connect your own servers/cloud via SSH/Docker Swarm or cloud hosts, deploy with zero-code Railpack OpenTelemetry injection, inspect distributed traces/errors inside the same control plane (or via /mcp in Claude Code/Cursor), and review autonomous AI SRE fix PRs with SSO governance.',
+      'Deploy from Git onto your own hosts, clouds, or clusters (Docker Swarm, Kubernetes, AWS ECS, Google Cloud Run, or bare metal), instrument via automatic Railpack OTel or a lightweight 2-3 line SDK hook, connect any MCP coding agent with secret redaction, and review autonomous AI SRE fix PRs with SSO governance included.',
     jobsToBeDone:
-      'Ship production services in minutes without managing Kubernetes manifests; trace production 500s straight back to the suspect commit; resolve recurring bugs via automated fix PRs while keeping enterprise SSO access controls.',
+      'Push from Git without managing CI glue; trace failures straight to the suspect commit; resolve runtime bugs and live CVEs via human-reviewed pull requests while keeping SSO and enterprise secret isolation.',
   },
   messagingPillars: [
     {
       pillar:
-        'Deploy -> Observe -> Resolve in one control plane (IDP, Observability, AI SRE, Govern)',
+        'Push to your servers -> Trace every deploy -> AI SRE fix PR -> Govern SSO ($200/month flat, 14-day free trial)',
     },
     {
       pillar:
-        'Zero-code Railpack OpenTelemetry instrumentation correlated automatically to Git releases',
+        'Lightweight OpenTelemetry: automatic on supported Railpack builds or a 2-3 line SDK hook anywhere, standard OTLP, zero collector sidecars',
     },
     {
       pillar:
-        'AI SRE that investigates OTel traces, identifies suspect commits, and opens reviewed fix PRs',
+        'Runs on your own infrastructure across Docker Swarm, Kubernetes, AWS ECS, Google Cloud Run, or bare metal',
     },
     {
       pillar:
-        'Production workspace for humans and coding agents via native /mcp server and Govern SSO',
+        'Agent-agnostic /mcp server connecting Cursor, Claude Code, Codex, Copilot, or custom MCP clients without exposing secret values',
     },
     {
       pillar:
-        '$200/month flat per organization: no per-seat, per-cluster, or per-host tax',
+        'Try the full loop without signing in at https://playground.formatio.cloud',
     },
   ],
   competitiveLandscape: [
     {
       name: 'Qovery',
       notes:
-        'Kubernetes-only DevOps automation ($299 Starter / $899 Growth + $299/cluster Observe add-on). Strong AWS EKS automation and Terraform support, but lacks native OTel distributed tracing, error grouping, and AI SRE fix PRs.',
+        'Kubernetes-centric control plane ($299 Starter / $899 Growth + $299/cluster Observe add-on, SSO gated higher). Strong Kubernetes/EKS automation, whereas Formatio runs multi-runtime (Docker Swarm, Kubernetes, ECS, Cloud Run), includes SSO + lightweight OTel + AI SRE PRs at $200/month flat.',
     },
     {
-      name: 'Datadog / New Relic',
+      name: 'Datadog / New Relic / Sentry',
       notes:
-        'Per-host and usage-billed observability giants. Powerful APM, but zero deployment control and unpredictable cost scaling for 4-35 engineer teams.',
+        'Per-host, per-seat, and span-ingestion observability tools with zero Git-to-cluster deployment control.',
     },
     {
       name: 'Render / Coolify / Dokploy',
       notes:
-        'Clean app deployment (or self-hosted PaaS), but stop at build/deploy: teams still stitch separate tools for distributed tracing, error grouping, suspect commits, and AI SRE remediation.',
+        'Clean app deployers that stop after container boot—teams still stitch separate tools for OTel tracing, suspect-commit error grouping, and AI SRE fix PRs.',
     },
   ],
   customerLanguage: {
     verbatims: [
       'Why do we need four tools and three browser tabs just to trace a failed deploy back to a commit?',
-      'Our Datadog bill tripled once we enabled container logs on staging.',
-      'We do not want a full-time engineer maintaining AWS EKS clusters and OTel Collector sidecars.',
-      'Can Claude Code or Cursor just pull the live production trace instead of me pasting 200 lines of stack traces into Slack?',
+      'Stop being the clipboard between your tools and AI.',
+      'We want distributed OpenTelemetry traces without maintaining collector sidecars.',
+      'Can our coding agent read live production stack frames over MCP without ever seeing .env secret values?',
     ],
   },
   proofPoints: [
     {
-      point: '$200/month flat org pricing covering IDP, Observability, AI SRE, and Govern (free tier included).',
+      point: '$200/month flat org pricing (starting with a 14-day free trial) covering IDP, Observability, AI SRE, and Govern.',
       verified: true,
     },
     {
-      point: 'AI SRE opens fix PRs automatically from OTel trace and suspect-commit context.',
+      point: 'Live interactive playground at https://playground.formatio.cloud lets visitors click through all 4 products with no sign-in required.',
       verified: true,
     },
     {
-      point: 'Govern ships with SSO and scoped organization access controls.',
+      point: 'Supports Docker Swarm, Kubernetes, AWS ECS, and Google Cloud Run on infrastructure you own.',
       verified: true,
     },
     {
-      point: 'Native /mcp endpoint connects Claude Code, Cursor, and Gemini CLI directly to production releases and occurrences.',
+      point: 'Automatic Railpack tracing or lightweight 2-3 line OTel SDK hook exporting standard OTLP.',
+      verified: true,
+    },
+    {
+      point: 'Agent-agnostic /mcp endpoint with expiring scoped tokens where get_application returns variable names only.',
       verified: true,
     },
   ],
@@ -102,25 +106,26 @@ const FORMATIO_CONTEXT = {
     },
     {
       id: 'H3',
-      title: '$200/mo Flat Pricing + Zero-K8s Server Simplicity Wins Qovery Evaluators',
+      title: '$200/mo Flat Pricing + Multi-Runtime Simplicity Wins PaaS Evaluators',
       status: 'TESTING',
     },
     {
       id: 'H4',
-      title: 'Zero-Code Railpack OTel Is the Fastest "Aha!" Activation Milestone',
+      title: 'Interactive Playground + Lightweight OTel Is the Fastest "Aha!" Activation Milestone',
       status: 'TESTING',
     },
   ],
   brandVoice:
-    'Technical practitioner voice modeled on PostHog and Infisical: alternate longer precise mechanisms with short punchy sentences; one idea per paragraph (1-4 sentences); teach the engineering process before mentioning the tool; dry earned humor; zero AI hype.',
+    'Technical practitioner voice modeled on PostHog and Infisical: strict sentence case, longer precise mechanisms paired with short punchy sentences; one idea per paragraph; teach the process before mentioning the tool; dry earned humor; zero AI hype.',
   wordsToUse: [
-    'openTelemetry',
+    'OpenTelemetry',
     'suspect commit',
     'fix PR',
     'control plane',
     'deploy correlation',
     '/mcp',
-    'zero-code instrumentation',
+    '14-day free trial',
+    'playground.formatio.cloud',
     'flat $200/month',
   ],
   wordsToAvoid: [
@@ -174,7 +179,7 @@ async function main() {
         updatedBy: 'sarafadeen@formatio.cloud',
         updateSource: 'manual_seed',
         changeSummary:
-          'Seeded Formatio GTM operating context ($200/mo pricing, AI SRE fix PRs, Govern SSO, Qovery battlecard, H1-H4 hypotheses).',
+          'Synced Formatio GTM operating context v2.1.0 ($200/mo flat, 14-day free trial, playground.formatio.cloud, multi-runtime Swarm/K8s/ECS/Cloud Run, lightweight OTel, agent-agnostic /mcp).',
       },
     });
   });
